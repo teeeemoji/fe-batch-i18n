@@ -59,10 +59,13 @@
     "test": "node scripts/test.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "version": "npm run changelog",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "cs-fix": "eslint --fix ."
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "./.eslintrc.js"
+    ]
   },
   "browserslist": [
     ">0.2%",
@@ -74,13 +77,21 @@
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
     "@moyuyc/husky": "^1.1.1",
-    "conventional-changelog-cli": "^2.0.5"
+    "conventional-changelog-cli": "^2.0.5",
+    "lint-staged": "^7.3.0"
   },
   "husky": {
     "installType": "append",
     "hooks": {
-      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "./node_modules/.bin/eslint --fix",
+      "git add "
+    ]
   },
   "commitlint": {
     "extends": [
